@@ -1,2 +1,8 @@
+
+# IDE files
+*.layout
+*.depend
+
+# Generated directories
 obj/
 bin/
