@@ -32,24 +32,25 @@ class Artillery {
 private:
     double m_degHeading;
     double m_degElevation;
-    double m_radElevation;
     int m_maxRotSpeed;
     int m_maxElevSpeed;
 
     double lvlGrndShotCalc(double shotVelocity) {
+        double radElev = deg2Rad(m_degElevation);
         // 2 * vnet^2 * sin(theta) * cos(theta) / g
-        return 2 * (shotVelocity*shotVelocity) * std::sin(m_radElevation) * std::cos(m_radElevation) / 9.81;
+        return 2 * (shotVelocity*shotVelocity) * std::sin(radElev) * std::cos(radElev) / 9.81;
     }
 
     Coord shotLandingCalc(double distance) {
-        double x = distance * std::cos(m_radElevation);
-        double y = distance * std::sin(m_radElevation);
+        double radHead = deg2Rad(m_degHeading);
+        double x = distance * std::cos(radHead);
+        double y = distance * std::sin(radHead);
         return Coord(x, y);
     }
 
 public:
     Artillery(double degHeading, double degElevation, int maxRotSpeed, int maxElevSpeed)
-        : m_degHeading(degHeading), m_degElevation(degElevation), m_radElevation(deg2Rad(degElevation)),
+        : m_degHeading(degHeading), m_degElevation(degElevation),
           m_maxRotSpeed(maxRotSpeed), m_maxElevSpeed(maxElevSpeed) {};
     Artillery(int maxRotSpeed, int maxElevSpeed)
         : Artillery(0.0, 45.0, maxRotSpeed, maxElevSpeed) {};
