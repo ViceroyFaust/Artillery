@@ -5,6 +5,10 @@
  * @Author DFOwl 2022
  */
 
+double deg2Rad(double deg) {
+    return deg * 3.1415 / 180;
+}
+
 class Coord {
 private:
     double m_x;
@@ -28,29 +32,38 @@ class Artillery {
 private:
     double m_degHeading;
     double m_degElevation;
+    double m_radElevation;
     int m_maxRotSpeed;
     int m_maxElevSpeed;
 
     double lvlGrndShotCalc(double shotVelocity) {
-        double elevDeg2Rad = m_degElevation * 3.1415 / 180;
         // 2 * vnet^2 * sin(theta) * cos(theta) / g
-        return 2 * (shotVelocity*shotVelocity) * std::sin(elevDeg2Rad) * std::cos(elevDeg2Rad) / 9.81;
+        return 2 * (shotVelocity*shotVelocity) * std::sin(m_radElevation) * std::cos(m_radElevation) / 9.81;
+    }
+
+    Coord shotLandingCalc(double distance) {
+        double x = distance * std::cos(m_radElevation);
+        double y = distance * std::sin(m_radElevation);
+        return Coord(x, y);
     }
 
 public:
     Artillery(double degHeading, double degElevation, int maxRotSpeed, int maxElevSpeed)
-        : m_degHeading(degHeading), m_degElevation(degElevation),
+        : m_degHeading(degHeading), m_degElevation(degElevation), m_radElevation(deg2Rad(degElevation)),
           m_maxRotSpeed(maxRotSpeed), m_maxElevSpeed(maxElevSpeed) {};
     Artillery(int maxRotSpeed, int maxElevSpeed)
         : Artillery(0.0, 45.0, maxRotSpeed, maxElevSpeed) {};
 
     void shoot(double shotVelocity) {
-        std::cout << lvlGrndShotCalc(shotVelocity) << " @ " << m_degHeading << std::endl;
+        double dist = lvlGrndShotCalc(shotVelocity);
+        Coord shotCoord = shotLandingCalc(dist);
+        std::cout << dist << " @ " << m_degHeading << std::endl;
+        std::cout << "Shot landed at: " << shotCoord << "." << std::endl;
     }
 };
 
 int main() {
-    Coord coord(6, 36);
-    std::cout << coord;
+    Artillery art(30, 60, 10, 10);
+    art.shoot(30);
     return 0;
 }
