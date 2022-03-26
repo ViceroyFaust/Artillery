@@ -7,8 +7,10 @@
 
 double bear2deg(double bearing) {
     double deg = 90 - bearing;
-    if (deg < 0)        deg + 360;
-    else if (deg > 360) deg - 360;
+    if (deg < 0)
+        deg += 360;
+    else if (deg > 360)
+        deg -= 360;
     return deg;
 }
 
@@ -37,7 +39,7 @@ public:
 
 class Artillery {
 private:
-    double m_degHeading;
+    double m_degBearing;
     double m_degElevation;
     int m_maxRotSpeed;
     int m_maxElevSpeed;
@@ -49,7 +51,7 @@ private:
     }
 
     Coord shotLandingCalc(double distance) {
-        double radHead = deg2Rad(m_degHeading);
+        double radHead = deg2Rad(m_degBearing);
         double x = distance * std::cos(radHead);
         double y = distance * std::sin(radHead);
         return Coord(x, y);
@@ -57,7 +59,7 @@ private:
 
 public:
     Artillery(double degHeading, double degElevation, int maxRotSpeed, int maxElevSpeed)
-        : m_degHeading(degHeading), m_degElevation(degElevation),
+        : m_degBearing(degHeading), m_degElevation(degElevation),
           m_maxRotSpeed(maxRotSpeed), m_maxElevSpeed(maxElevSpeed) {};
     Artillery(int maxRotSpeed, int maxElevSpeed)
         : Artillery(0.0, 45.0, maxRotSpeed, maxElevSpeed) {};
@@ -65,7 +67,7 @@ public:
     void shoot(double shotVelocity) {
         double dist = lvlGrndShotCalc(shotVelocity);
         Coord shotCoord = shotLandingCalc(dist);
-        std::cout << dist << " @ " << m_degHeading << std::endl;
+        std::cout << dist << " @ " << m_degBearing << std::endl;
         std::cout << "Shot landed at: " << shotCoord << "." << std::endl;
     }
 };
