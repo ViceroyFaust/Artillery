@@ -5,6 +5,13 @@
  * @Author DFOwl 2022
  */
 
+double bear2deg(double bearing) {
+    double deg = 90 - bearing;
+    if (deg < 0)        deg + 360;
+    else if (deg > 360) deg - 360;
+    return deg;
+}
+
 double deg2Rad(double deg) {
     return deg * 3.1415 / 180;
 }
