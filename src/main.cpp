@@ -51,7 +51,9 @@ private:
     }
 
     Coord shotLandingCalc(double distance) {
-        double radHead = deg2Rad(m_degBearing);
+        // Convert the bearing to trig degrees for math to be right
+        // Further, convert degrees to radians as that's what cmath uses
+        double radHead = deg2Rad(bear2deg(m_degBearing));
         double x = distance * std::cos(radHead);
         double y = distance * std::sin(radHead);
         return Coord(x, y);
@@ -73,7 +75,7 @@ public:
 };
 
 int main() {
-    Artillery art(30, 60, 10, 10);
+    Artillery art(200, 60, 10, 10); // Expected (-27.17, -74.66) as result
     art.shoot(30);
     return 0;
 }
