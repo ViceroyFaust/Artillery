@@ -20,8 +20,8 @@ double deg2Rad(double deg) {
 
 class Coord {
 private:
-    double m_x;
-    double m_y;
+    const double m_x;
+    const double m_y;
 public:
     Coord(double x, double y) : m_x(x), m_y(y) {};
     double x() const {
