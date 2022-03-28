@@ -19,44 +19,49 @@ double deg2Rad(double deg) {
     return deg * 3.1415 / 180;
 }
 
-class Objective {
-private:
-    Pos m_pos;
-    int m_radius;
-    int m_points;
-public:
-    Objective(Pos pos, int radius, int points)
-        : m_pos(pos), m_radius(radius), m_points(points) {};
-    void Pos getPos() {
-        return m_pos;
-    }
-    void int getRadius() {
-        return m_radius;
-    }
-    void int getPoints() {
-        return m_points;
-    }
-};
+// d = sqrt((x2 - x1)^(2) + (y2 - y1)^(2))
+double calcDist(double x1, double y1, double x2, double y2) {
+    return std::sqrt((x2 - x1) * (x2 - x1) + (y2 - y1) * (y2 - y1));
+}
 
-class Pos {
+class Point {
 public:
     double m_x;
     double m_y;
-    Pos(double x, double y) : m_x(x), m_y(y) {};
+    Point(double x, double y) : m_x(x), m_y(y) {};
 
-    friend std::ostream& operator<<(std::ostream& os, const Pos& c) {
-        os << "(" << c.m_x << ", " << c.m_y << ")";
+    friend std::ostream& operator<<(std::ostream& os, const Point& p) {
+        os << "(" << p.m_x << ", " << p.m_y << ")";
         return os;
+    }
+};
+
+class Target {
+private:
+    Point m_pos;
+    int m_radius;
+    int m_points;
+public:
+    Target(Point pos, int radius, int points)
+        : m_pos(pos), m_radius(radius), m_points(points) {};
+    Point getPos() {
+        return m_pos;
+    }
+    int getRadius() {
+        return m_radius;
+    }
+    int getPoints() {
+        return m_points;
     }
 };
 
 class WorldMap {
 private:
-    std::vector<Pos> shots;
+    std::vector<Point> shots;
 public:
     WorldMap() : shots() {};
 
-    void recordShot(const Pos& c) {
+    void recordShot(const Point& c) {
         shots.push_back(c);
     }
 };
@@ -68,19 +73,10 @@ private:
     int m_maxRotSpeed;
     int m_maxElevSpeed;
 
-    double lvlGrndShotCalc(double shotVelocity) {
+    double calcLevelDistance(double shotVelocity) {
         double radElev = deg2Rad(m_degElevation);
         // 2 * vnet^2 * sin(theta) * cos(theta) / g
         return 2 * (shotVelocity*shotVelocity) * std::sin(radElev) * std::cos(radElev) / 9.81;
-    }
-
-    Pos shotLandingCalc(double distance) {
-        // Convert the bearing to trig degrees for math to be right
-        // Further, convert degrees to radians as that's what cmath uses
-        double radHead = deg2Rad(bear2deg(m_degBearing));
-        double x = distance * std::cos(radHead);
-        double y = distance * std::sin(radHead);
-        return Pos(x, y);
     }
 
 public:
@@ -90,11 +86,14 @@ public:
     Artillery(int maxRotSpeed, int maxElevSpeed)
         : Artillery(0.0, 45.0, maxRotSpeed, maxElevSpeed) {};
 
-    void shoot(double shotVelocity) {
-        double dist = lvlGrndShotCalc(shotVelocity);
-        Pos shotCoord = shotLandingCalc(dist);
-        std::cout << dist << " @ " << m_degBearing << std::endl;
-        std::cout << "Shot landed at: " << shotCoord << "." << std::endl;
+    Point shoot(double shotVelocity) {
+        double distance = calcLevelDistance(shotVelocity);
+        // Convert the bearing to trig degrees for math to be right
+        // Further, convert degrees to radians as that's what cmath uses
+        double radHead = deg2Rad(bear2deg(m_degBearing));
+        double x = distance * std::cos(radHead);
+        double y = distance * std::sin(radHead);
+        return Point(x, y);
     }
 };
 
