@@ -26,7 +26,7 @@ public:
     Pos(double x, double y) : m_x(x), m_y(y) {};
 
     friend std::ostream& operator<<(std::ostream& os, const Pos& c) {
-        os << "(" << c.x() << ", " << c.y() << ")";
+        os << "(" << c.m_x << ", " << c.m_y << ")";
         return os;
     }
 };
