@@ -1,6 +1,8 @@
 #include <cmath>
 #include <iostream>
+#include <unordered_map>
 #include <vector>
+
 
 /*
  * @Author DFOwl 2022
@@ -39,15 +41,16 @@ public:
 class Target {
 private:
     Point m_pos;
-    int m_radius;
+    double m_radius;
     int m_points;
+
 public:
     Target(Point pos, int radius, int points)
         : m_pos(pos), m_radius(radius), m_points(points) {};
     Point getPos() {
         return m_pos;
     }
-    int getRadius() {
+    double getRadius() {
         return m_radius;
     }
     int getPoints() {
@@ -58,8 +61,23 @@ public:
 class WorldMap {
 private:
     std::vector<Point> shots;
+    std::unordered_map<unsigned int, Target> targets;
+
+    unsigned int genTargetID() {
+        static unsigned int s_id{0};
+        return s_id++;
+    }
+
 public:
-    WorldMap() : shots() {};
+    WorldMap() : shots(), targets() {};
+
+    void addTarget(const Target& toAdd) {
+        targets.insert(std::pair<unsigned int, Target>(genTargetID(), toAdd));
+    }
+
+    void removeTarget(unsigned int idToRemove) {
+        targets.erase(idToRemove);
+    }
 
     void recordShot(const Point& c) {
         shots.push_back(c);
