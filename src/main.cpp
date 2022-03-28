@@ -19,28 +19,13 @@ double deg2Rad(double deg) {
     return deg * 3.1415 / 180;
 }
 
-class Coord {
-private:
+class Pos {
+public:
     double m_x;
     double m_y;
-public:
-    Coord(double x, double y) : m_x(x), m_y(y) {};
-    double x() const {
-        return m_x;
-    }
-    double y() const {
-        return m_y;
-    }
+    Pos(double x, double y) : m_x(x), m_y(y) {};
 
-    void setX(double x) {
-        m_x = x;
-    }
-    void setY(double y) {
-        m_y = y;
-    }
-
-
-    friend std::ostream& operator<<(std::ostream& os, const Coord& c) {
+    friend std::ostream& operator<<(std::ostream& os, const Pos& c) {
         os << "(" << c.x() << ", " << c.y() << ")";
         return os;
     }
@@ -48,11 +33,11 @@ public:
 
 class WorldMap {
 private:
-    std::vector<Coord> shots;
+    std::vector<Pos> shots;
 public:
     WorldMap() : shots() {};
 
-    void recordShot(const Coord& c) {
+    void recordShot(const Pos& c) {
         shots.push_back(c);
     }
 };
@@ -70,13 +55,13 @@ private:
         return 2 * (shotVelocity*shotVelocity) * std::sin(radElev) * std::cos(radElev) / 9.81;
     }
 
-    Coord shotLandingCalc(double distance) {
+    Pos shotLandingCalc(double distance) {
         // Convert the bearing to trig degrees for math to be right
         // Further, convert degrees to radians as that's what cmath uses
         double radHead = deg2Rad(bear2deg(m_degBearing));
         double x = distance * std::cos(radHead);
         double y = distance * std::sin(radHead);
-        return Coord(x, y);
+        return Pos(x, y);
     }
 
 public:
@@ -88,7 +73,7 @@ public:
 
     void shoot(double shotVelocity) {
         double dist = lvlGrndShotCalc(shotVelocity);
-        Coord shotCoord = shotLandingCalc(dist);
+        Pos shotCoord = shotLandingCalc(dist);
         std::cout << dist << " @ " << m_degBearing << std::endl;
         std::cout << "Shot landed at: " << shotCoord << "." << std::endl;
     }
