@@ -21,8 +21,8 @@ double deg2Rad(double deg) {
 
 class Coord {
 private:
-    const double m_x;
-    const double m_y;
+    double m_x;
+    double m_y;
 public:
     Coord(double x, double y) : m_x(x), m_y(y) {};
     double x() const {
@@ -30,6 +30,11 @@ public:
     }
     double y() const {
         return m_y;
+    }
+
+    void move(double x, double y) {
+        m_x += x;
+        m_y += y;
     }
 
     friend std::ostream& operator<<(std::ostream& os, const Coord& c) {
