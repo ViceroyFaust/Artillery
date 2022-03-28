@@ -19,6 +19,25 @@ double deg2Rad(double deg) {
     return deg * 3.1415 / 180;
 }
 
+class Objective {
+private:
+    Pos m_pos;
+    int m_radius;
+    int m_points;
+public:
+    Objective(Pos pos, int radius, int points)
+        : m_pos(pos), m_radius(radius), m_points(points) {};
+    void Pos getPos() {
+        return m_pos;
+    }
+    void int getRadius() {
+        return m_radius;
+    }
+    void int getPoints() {
+        return m_points;
+    }
+};
+
 class Pos {
 public:
     double m_x;
