@@ -1,5 +1,6 @@
 #include <cmath>
 #include <iostream>
+#include <vector>
 
 /*
  * @Author DFOwl 2022
@@ -34,6 +35,17 @@ public:
     friend std::ostream& operator<<(std::ostream& os, const Coord& c) {
         os << "(" << c.x() << ", " << c.y() << ")";
         return os;
+    }
+};
+
+class WorldMap {
+private:
+    std::vector<Coord> shots;
+public:
+    WorldMap() : shots() {};
+
+    void recordShot(const Coord& c) {
+        shots.push_back(c);
     }
 };
 
