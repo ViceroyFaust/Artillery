@@ -32,10 +32,13 @@ public:
         return m_y;
     }
 
-    void move(double x, double y) {
-        m_x += x;
-        m_y += y;
+    void setX(double x) {
+        m_x = x;
     }
+    void setY(double y) {
+        m_y = y;
+    }
+
 
     friend std::ostream& operator<<(std::ostream& os, const Coord& c) {
         os << "(" << c.x() << ", " << c.y() << ")";
