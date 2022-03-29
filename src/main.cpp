@@ -94,7 +94,7 @@ private:
     double calcLevelDistance(double shotVelocity) {
         double radElev = deg2Rad(m_degElevation);
         // 2 * vnet^2 * sin(theta) * cos(theta) / g
-        return 2 * (shotVelocity*shotVelocity) * std::sin(radElev) * std::cos(radElev) / 9.81;
+        return std::abs(2 * (shotVelocity*shotVelocity) * std::sin(radElev) * std::cos(radElev) / 9.81);
     }
 
 public:
