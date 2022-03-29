@@ -89,6 +89,10 @@ private:
 public:
     WorldMap() : shots(), targets() {};
 
+    void recordShot(const Point& c) {
+        shots.push_back(c);
+    }
+
     void addTarget(const Target& toAdd) {
         targets.insert(std::pair<unsigned int, Target>(genTargetID(), toAdd));
     }
@@ -97,9 +101,14 @@ public:
         targets.erase(idToRemove);
     }
 
-    void recordShot(const Point& c) {
-        shots.push_back(c);
+    std::vector<Point> getShots() {
+        return shots;
     }
+
+    std::unordered_map<unsigned int, Target> getTargets() {
+        return targets;
+    }
+
 };
 
 class Artillery {
@@ -128,6 +137,22 @@ public:
 
     void changeElevBy(double degrees) {
         m_degElevation = clamp(m_degElevation + degrees, 0, 90);
+    }
+
+    double getBearing () {
+        return m_degBearing;
+    }
+
+    double getDegsElevation() {
+        return m_degElevation;
+    }
+
+    double getRotSpeed() {
+        return m_maxRotSpeed;
+    }
+
+    double getElevSpeed() {
+        return m_maxElevSpeed;
     }
 
     Point shoot(double shotVelocity) {
