@@ -8,6 +8,24 @@
  * @Author DFOwl 2022
  */
 
+double pi = 3.1415926536;
+
+double clamp(double num, double min, double max) {
+    if (num > max)
+        return max;
+    else if (num < min)
+        return min;
+    return num;
+}
+
+double rotateThrough(double num, double min, double max) {
+    if (num > max)
+        return num - max;
+    else if (num < min)
+        return num + max;
+    return num;
+}
+
 double bear2deg(double bearing) {
     double deg = 90 - bearing;
     if (deg < 0)
@@ -18,7 +36,7 @@ double bear2deg(double bearing) {
 }
 
 double deg2Rad(double deg) {
-    return deg * 3.1415 / 180;
+    return deg * pi / 180;
 }
 
 // d = sqrt((x2 - x1)^(2) + (y2 - y1)^(2))
@@ -102,18 +120,14 @@ public:
         : m_degBearing(degHeading), m_degElevation(degElevation),
           m_maxRotSpeed(maxRotSpeed), m_maxElevSpeed(maxElevSpeed) {};
     Artillery(double maxRotSpeed, double maxElevSpeed)
-        : Artillery(0.0, 45.0, maxRotSpeed, maxElevSpeed) {};
+        : Artillery(0.0, 0.0, maxRotSpeed, maxElevSpeed) {};
 
-    void rotateTo(double newBearing) {
-        double time = newBearing / m_maxRotSpeed;
-        m_degBearing = newBearing;
-        std::cout << "Rotation took " << time << " seconds.\n";
+    void rotateBy(double degrees) {
+        m_degBearing = rotateThrough(m_degBearing + degrees, 0, 360);
     }
 
-    void changeElevTo(double newElev) {
-        double time = newElev / m_maxElevSpeed;
-        m_degElevation = newElev;
-        std::cout << "Change in elevation took " << time << "seconds.\n";
+    void changeElevBy(double degrees) {
+        m_degElevation = clamp(m_degElevation + degrees, 0, 90);
     }
 
     Point shoot(double shotVelocity) {
@@ -128,7 +142,11 @@ public:
 };
 
 int main() {
-    WorldMap gameMap();
-    Artillery art(10, 10);
+    WorldMap gameMap;
+    Artillery art(10, 2);
+    art.rotateBy(345);
+    art.changeElevBy(33);
+    std::cout << "Shot landed @ " << art.shoot(100) << std::endl; // (-241.02, 899.51)
+
     return 0;
 }
