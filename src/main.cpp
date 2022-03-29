@@ -88,8 +88,8 @@ class Artillery {
 private:
     double m_degBearing;
     double m_degElevation;
-    int m_maxRotSpeed;
-    int m_maxElevSpeed;
+    double m_maxRotSpeed;
+    double m_maxElevSpeed;
 
     double calcLevelDistance(double shotVelocity) {
         double radElev = deg2Rad(m_degElevation);
@@ -98,11 +98,23 @@ private:
     }
 
 public:
-    Artillery(double degHeading, double degElevation, int maxRotSpeed, int maxElevSpeed)
+    Artillery(double degHeading, double degElevation, double maxRotSpeed, double maxElevSpeed)
         : m_degBearing(degHeading), m_degElevation(degElevation),
           m_maxRotSpeed(maxRotSpeed), m_maxElevSpeed(maxElevSpeed) {};
-    Artillery(int maxRotSpeed, int maxElevSpeed)
+    Artillery(double maxRotSpeed, double maxElevSpeed)
         : Artillery(0.0, 45.0, maxRotSpeed, maxElevSpeed) {};
+
+    void rotateTo(double newBearing) {
+        double time = newBearing / m_maxRotSpeed;
+        m_degBearing = newBearing;
+        std::cout << "Rotation took " << time << " seconds.\n";
+    }
+
+    void changeElevTo(double newElev) {
+        double time = newElev / m_maxElevSpeed;
+        m_degElevation = newElev;
+        std::cout << "Change in elevation took " << time << "seconds.\n";
+    }
 
     Point shoot(double shotVelocity) {
         double distance = calcLevelDistance(shotVelocity);
@@ -116,7 +128,7 @@ public:
 };
 
 int main() {
-    Artillery art(200, 60, 10, 10); // Expected (-27.17, -74.66) as result
-    art.shoot(30);
+    WorldMap gameMap();
+    Artillery art(10, 10);
     return 0;
 }
