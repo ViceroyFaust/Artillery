@@ -23,17 +23,37 @@ class Target {
 private:
     Point m_pos;
     double m_radius;
+    int m_hp;
     int m_points;
 
 public:
-    Target(Point pos, int radius, int points)
-        : m_pos(pos), m_radius(radius), m_points(points) {};
+    Target(Point pos, int radius, int hp, int points)
+        : m_pos(pos), m_radius(radius), m_hp(clamp(hp, 0, 100)), m_points(points) {};
+
+    bool doesThisHitMe(const Point& shot) {
+        return calcDist(shot.m_x, shot.m_y, m_pos.m_x, m_pos.m_y) <= m_radius;
+    }
+
+    void changePos(double x, double y) {
+        m_pos = Point(m_pos.m_x + x, m_pos.m_y + y);
+    }
+
+    void changeHP(int change) {
+        m_hp = clamp(m_hp + change, 0, 100);
+    }
+
     Point getPos() const {
         return m_pos;
     }
+
     double getRadius() const {
         return m_radius;
     }
+
+    int getHP() const {
+        return m_hp;
+    }
+
     int getPoints() const {
         return m_points;
     }
@@ -141,10 +161,6 @@ private:
     int points;
     World gameMap;
     Artillery art;
-
-    bool checkCollision(const Point& shot, const Target& target) {
-        return calcDist(shot.m_x, shot.m_y, target.getPos().m_x, target.getPos().m_y) <= target.getRadius();
-    }
 
 public:
     Game() : points(0), gameMap(), art(15, 2) {};
