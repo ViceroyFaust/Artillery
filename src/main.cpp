@@ -77,7 +77,7 @@ public:
     }
 
     Point getShot(unsigned int index) {
-        return targets[index];
+        return shots[index];
     }
 };
 
