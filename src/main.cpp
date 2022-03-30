@@ -116,8 +116,8 @@ private:
 
 public:
     Artillery(double degHeading, double degElevation, double maxRotSpeed, double maxElevSpeed)
-        : m_degBearing(degHeading), m_degElevation(degElevation),
-          m_maxRotSpeed(maxRotSpeed), m_maxElevSpeed(maxElevSpeed) {};
+        : m_degBearing(rotateThrough(degHeading, 0, 360)), m_degElevation(clamp(degElevation, 0, 90)),
+          m_maxRotSpeed(noLessThan(maxRotSpeed, 0)), m_maxElevSpeed(noLessThan(maxElevSpeed, 0)) {};
     Artillery(double maxRotSpeed, double maxElevSpeed)
         : Artillery(0.0, 0.0, maxRotSpeed, maxElevSpeed) {};
 

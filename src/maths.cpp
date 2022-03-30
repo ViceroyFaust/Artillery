@@ -8,6 +8,13 @@ double clamp(double num, double min, double max) {
     return num;
 }
 
+double noLessThan(double num, double lim) {
+    if (num < lim) {
+        return lim;
+    }
+    return num;
+}
+
 double rotateThrough(double num, double min, double max) {
     if (num > max)
         return num - max;
