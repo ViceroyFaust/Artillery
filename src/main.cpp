@@ -1,6 +1,4 @@
-#include <cmath>
 #include <iostream>
-#include <unordered_map>
 #include <vector>
 
 #include "maths.h"
@@ -30,21 +28,21 @@ private:
 public:
     Target(Point pos, int radius, int points)
         : m_pos(pos), m_radius(radius), m_points(points) {};
-    Point getPos() {
+    Point getPos() const {
         return m_pos;
     }
-    double getRadius() {
+    double getRadius() const {
         return m_radius;
     }
-    int getPoints() {
+    int getPoints() const {
         return m_points;
     }
 };
 
-class WorldMap {
+class World {
 private:
     std::vector<Point> shots;
-    std::unordered_map<unsigned int, Target> targets;
+    std::vector<Target> targets;
 
     unsigned int genTargetID() {
         static unsigned int s_id{0};
@@ -52,28 +50,35 @@ private:
     }
 
 public:
-    WorldMap() : shots(), targets() {};
+    World() : shots(), targets() {};
 
     void recordShot(const Point& c) {
         shots.push_back(c);
     }
 
     void addTarget(const Target& toAdd) {
-        targets.insert(std::pair<unsigned int, Target>(genTargetID(), toAdd));
+        targets.push_back(toAdd);
     }
 
-    void removeTarget(unsigned int idToRemove) {
-        targets.erase(idToRemove);
+    void removeTarget(unsigned int index) {
+        targets.erase(targets.begin() + index);
     }
 
-    std::vector<Point> getShots() {
-        return shots;
+    unsigned int getTargetAmt() {
+        return targets.size();
     }
 
-    std::unordered_map<unsigned int, Target> getTargets() {
-        return targets;
+    Target getTarget(unsigned int index) {
+        return targets[index];
     }
 
+    unsigned int getShotsAmt() {
+        return shots.size();
+    }
+
+    Point getShot(unsigned int index) {
+        return targets[index];
+    }
 };
 
 class Artillery {
@@ -131,8 +136,43 @@ public:
     }
 };
 
+class Game {
+private:
+    int points;
+    World gameMap;
+    Artillery art;
+
+    bool checkCollision(const Point& shot, const Target& target) {
+        return calcDist(shot.m_x, shot.m_y, target.getPos().m_x, target.getPos().m_y) <= target.getRadius();
+    }
+
+public:
+    Game() : points(0), gameMap(), art(15, 2) {};
+
+    void printPoints() {
+        std::cout << "Points: " << points << std::endl;
+    }
+
+    void printArtBearing() {
+        std::cout << "Current Bearing: " << art.getBearing() << "°\n";
+    }
+
+    void printArtElevation() {
+        std::cout << "Current Elevation: " << art.getDegsElevation() << "°\n";
+    }
+
+    void printRotSpeed() {
+        std::cout << "Rotational speed: " << art.getRotSpeed() << "°/second\n";
+    }
+
+    void printElevSpeed() {
+        std::cout << "Elevation speed: " << art.getElevSpeed() << "°/second\n";
+    }
+
+};
+
 int main() {
-    WorldMap gameMap;
+    World gameMap;
     Artillery art(10, 2);
     art.rotateBy(345);
     art.changeElevBy(33);
