@@ -129,19 +129,19 @@ public:
         m_degElevation = clamp(m_degElevation + degrees, 0, 90);
     }
 
-    double getBearing () {
+    double getBearing () const {
         return m_degBearing;
     }
 
-    double getDegsElevation() {
+    double getDegsElevation() const {
         return m_degElevation;
     }
 
-    double getRotSpeed() {
+    double getRotSpeed() const {
         return m_maxRotSpeed;
     }
 
-    double getElevSpeed() {
+    double getElevSpeed() const {
         return m_maxElevSpeed;
     }
 
@@ -163,25 +163,37 @@ private:
     Artillery art;
 
 public:
-    Game() : points(0), gameMap(), art(15, 2) {};
+    Game(double maxRotSpeed, double maxElevSpeed)
+        : points(0), gameMap(), art(maxRotSpeed, maxElevSpeed) {};
 
-    void printPoints() {
+    void recordHits(const Point& shot) {
+        unsigned int size = gameMap.getTargetAmt();
+        for (unsigned int i = 0u; i < size; ++i) {
+            Target t = gameMap.getTarget(i);
+            if (t.getHP() > 0 && t.doesThisHitMe(shot)) {
+                points += t.getPoints();
+                t.changeHP(-100);
+            }
+        }
+    }
+
+    void printPoints() const {
         std::cout << "Points: " << points << std::endl;
     }
 
-    void printArtBearing() {
+    void printArtBearing() const {
         std::cout << "Current Bearing: " << art.getBearing() << "°\n";
     }
 
-    void printArtElevation() {
+    void printArtElevation() const {
         std::cout << "Current Elevation: " << art.getDegsElevation() << "°\n";
     }
 
-    void printRotSpeed() {
+    void printRotSpeed() const {
         std::cout << "Rotational speed: " << art.getRotSpeed() << "°/second\n";
     }
 
-    void printElevSpeed() {
+    void printElevSpeed() const {
         std::cout << "Elevation speed: " << art.getElevSpeed() << "°/second\n";
     }
 
