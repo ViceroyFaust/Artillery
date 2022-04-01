@@ -1,4 +1,5 @@
 #include <iostream>
+#include <string>
 #include <vector>
 
 #include "maths.h"
@@ -162,10 +163,6 @@ private:
     World gameMap;
     Artillery art;
 
-public:
-    Game(double maxRotSpeed, double maxElevSpeed)
-        : points(0), gameMap(), art(maxRotSpeed, maxElevSpeed) {};
-
     void recordHits(const Point& shot) {
         unsigned int size = gameMap.getTargetAmt();
         for (unsigned int i = 0u; i < size; ++i) {
@@ -175,6 +172,19 @@ public:
                 t.changeHP(-100);
             }
         }
+    }
+
+public:
+    Game(double maxRotSpeed, double maxElevSpeed)
+        : points(0), gameMap(), art(maxRotSpeed, maxElevSpeed) {};
+
+    void printInfo() const {
+        std::cout << "All Info:" << std::endl;
+        printArtBearing();
+        printArtElevation();
+        printRotSpeed();
+        printElevSpeed();
+        printPoints();
     }
 
     void printPoints() const {
@@ -200,11 +210,7 @@ public:
 };
 
 int main() {
-    World gameMap;
-    Artillery art(10, 2);
-    art.rotateBy(345);
-    art.changeElevBy(33);
-    std::cout << "Shot landed @ " << art.shoot(100) << std::endl; // (-241.02, 899.51)
-
+    Game game(15, 5);
+    game.startGame();
     return 0;
 }
