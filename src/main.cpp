@@ -2,6 +2,7 @@
 #include <string>
 #include <vector>
 
+#include "cli.h"
 #include "maths.h"
 
 /*
@@ -210,7 +211,11 @@ public:
 };
 
 int main() {
-    Game game(15, 5);
-    game.startGame();
+    std::string test = " \tThis,is,separated,by,commas\t            ";
+    test = rightTrim(leftTrim(test));
+    std::vector<std::string> words = splitStr(test, ",");
+    for (std::string str : words) {
+        std::cout << str << std::endl;
+    }
     return 0;
 }
