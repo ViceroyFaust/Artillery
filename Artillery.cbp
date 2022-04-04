@@ -37,6 +37,8 @@
 		<Unit filename="src/main.cpp" />
 		<Unit filename="src/maths.cpp" />
 		<Unit filename="src/maths.h" />
+		<Unit filename="src/owlFuncs.cpp" />
+		<Unit filename="src/owlFuncs.h" />
 		<Extensions />
 	</Project>
 </CodeBlocks_project_file>

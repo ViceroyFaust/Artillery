@@ -10,7 +10,6 @@ In the end goal I would like to learn to implement actual graphics and sounds, a
 
 ## TODO
 The first step is to create what I know is within my skill limits: a text-based prototype for the game.
-1. Create an object representing the artillery and its controls
-2. Implement a way to control and "fire" the artillery
-3. Implement a target generating system
-4. Plan next steps
+1. Generate targets for the user
+2. Randomly generate targets for the user
+3. Make a `predictShot` function, maybe?
