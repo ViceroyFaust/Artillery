@@ -32,6 +32,8 @@
 			<Add option="-Wall" />
 			<Add option="-fexceptions" />
 		</Compiler>
+		<Unit filename="src/cli.cpp" />
+		<Unit filename="src/cli.h" />
 		<Unit filename="src/main.cpp" />
 		<Unit filename="src/maths.cpp" />
 		<Unit filename="src/maths.h" />

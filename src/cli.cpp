@@ -50,3 +50,7 @@ std::string rightTrim(const std::string& str) {
     }
     return str.substr(0, index + 1);
 }
+
+std::string trim(const std::string& str) {
+    return rightTrim(leftTrim(str));
+}
