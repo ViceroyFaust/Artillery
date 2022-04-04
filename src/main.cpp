@@ -3,6 +3,7 @@
 #include <vector>
 
 #include "cli.h"
+#include "owlFuncs.h"
 #include "maths.h"
 
 /*
@@ -86,19 +87,19 @@ public:
         targets.erase(targets.begin() + index);
     }
 
-    unsigned int getTargetAmt() {
+    unsigned int getTargetAmt() const {
         return targets.size();
     }
 
-    Target getTarget(unsigned int index) {
+    Target getTarget(unsigned int index) const {
         return targets[index];
     }
 
-    unsigned int getShotsAmt() {
+    unsigned int getShotsAmt() const {
         return shots.size();
     }
 
-    Point getShot(unsigned int index) {
+    Point getShot(unsigned int index) const {
         return shots[index];
     }
 };
@@ -173,11 +174,48 @@ private:
                 t.changeHP(-100);
             }
         }
+        gameMap.recordShot(shot);
+    }
+
+    // Returns a bool. True - exit, otherwise false
+    bool processCommands(const std::string& in) {
+        std::vector<std::string> args = splitStr(trim(in), " ");
+        if (args.empty())
+            return false;
+        if (args[0] == "exit")
+            return true;
+        if (args[0] == "artinfo") {
+            printInfo();
+        } else if (args[0] == "shothist") {
+            printShotHist();
+        } else if (args[0] == "targets") {
+            printTargets();
+        } else if (args[0] == "rotate") {
+            art.rotateBy(std::stod(args[1]));
+        } else if (args[0] == "elevate") {
+            art.changeElevBy(std::stod(args[1]));
+        } else if (args[0] == "shoot") {
+            Point shot = art.shoot(std::stod(args[1]));
+            std::cout << "Shot landed @ " << shot << std::endl;
+            recordHits(shot);
+        }
+        return false;
     }
 
 public:
     Game(double maxRotSpeed, double maxElevSpeed)
         : points(0), gameMap(), art(maxRotSpeed, maxElevSpeed) {};
+    Game() : Game(20, 10) {};
+
+    void startGame() {
+        std::string in;
+        bool done = false;
+        printInfo();
+        do {
+            in = getInput();
+            done = processCommands(in);
+        } while (!done);
+    }
 
     void printInfo() const {
         std::cout << "All Info:" << std::endl;
@@ -208,14 +246,28 @@ public:
         std::cout << "Elevation speed: " << art.getElevSpeed() << "°/second\n";
     }
 
+    void printShotHist() const {
+        std::cout << "Shot History:\n";
+        for (size_t i = 0; i < gameMap.getShotsAmt(); ++i) {
+            std::cout << gameMap.getShot(i) << std::endl;
+        }
+    }
+
+    void printTargets() const {
+        std::cout << "Targets:\n";
+        for (size_t i = 0; i < gameMap.getTargetAmt(); ++i) {
+            Target targ = gameMap.getTarget(i);
+            std::cout << targ.getPos();
+            if (targ.getHP() > 0)
+                std::cout << " " << targ.getHP() << " HP\n";
+            else
+                std::cout << " DESTROYED\n";
+        }
+    }
 };
 
 int main() {
-    std::string test = " \tThis,is,separated,by,commas\t            ";
-    test = rightTrim(leftTrim(test));
-    std::vector<std::string> words = splitStr(test, ",");
-    for (std::string str : words) {
-        std::cout << str << std::endl;
-    }
+    Game game;
+    game.startGame();
     return 0;
 }
