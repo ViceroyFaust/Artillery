@@ -1,8 +1,6 @@
 #ifndef MATHS_H_INCLUDED
 #define MATHS_H_INCLUDED
 
-#include <cmath>
-
 const double pi (3.1415926536);
 
 double clamp(double num, double min, double max);

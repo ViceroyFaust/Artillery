@@ -1,8 +1,8 @@
 #ifndef OWLFUNCS_H_INCLUDED
 #define OWLFUNCS_H_INCLUDED
 
-#include <vector>
 #include <string>
+#include <vector>
 
 std::vector<std::string> splitStr(const std::string& str, const std::string& delim);
 

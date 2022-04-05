@@ -34,6 +34,10 @@
 		</Compiler>
 		<Unit filename="src/cli.cpp" />
 		<Unit filename="src/cli.h" />
+		<Unit filename="src/game.cpp" />
+		<Unit filename="src/game.h" />
+		<Unit filename="src/gameObjs.cpp" />
+		<Unit filename="src/gameObjs.h" />
 		<Unit filename="src/main.cpp" />
 		<Unit filename="src/maths.cpp" />
 		<Unit filename="src/maths.h" />

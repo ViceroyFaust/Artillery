@@ -1,3 +1,5 @@
+#include <cmath>
+
 #include "maths.h"
 
 double clamp(double num, double min, double max) {
