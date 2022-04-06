@@ -4,6 +4,7 @@
 #include <ostream>
 #include "gameObjs.h"
 
+// A standard coordinate point
 class Point {
 public:
     double x;
@@ -16,6 +17,7 @@ public:
     }
 };
 
+// A target to be shot by the player.
 class Target {
 private:
     Point m_pos;
@@ -24,12 +26,16 @@ private:
     int m_points;
 
 public:
-    Target(Point pos, int radius, int hp, int points);
+    // Constructs a target with a coordinate pos, hit radius, hitpoints, and points
+    Target(Point pos, double radius, int hp, int points);
 
+    // returns true if shot distance <= radius length of target
     bool doesThisHitMe(const Point& shot);
 
+    // Increments x and y based on input
     void changePos(double x, double y);
 
+    // Increments health based on input
     void changeHP(int change);
 
     Point getPos() const { return m_pos; }

@@ -1,5 +1,6 @@
 #include "owlFuncs.h"
 
+// Splits a string based on a delimiter and returns as vector of strings
 std::vector<std::string> splitStr(const std::string& str, const std::string& delim) {
     std::vector<std::string> strings;
     size_t index1 = 0u;
@@ -13,6 +14,7 @@ std::vector<std::string> splitStr(const std::string& str, const std::string& del
     return strings;
 }
 
+// Removes whitespace on the left side of a string
 std::string leftTrim(const std::string& str) {
     if (str.empty())
         return str;
@@ -26,6 +28,7 @@ std::string leftTrim(const std::string& str) {
     return str.substr(index);
 }
 
+// Removes whitespace on the right side of the string
 std::string rightTrim(const std::string& str) {
     if (str.empty())
         return str;
@@ -39,6 +42,7 @@ std::string rightTrim(const std::string& str) {
     return str.substr(0, index + 1);
 }
 
+// Removes whitespace from the both sides of the string
 std::string trim(const std::string& str) {
     return rightTrim(leftTrim(str));
 }
