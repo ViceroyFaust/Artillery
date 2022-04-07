@@ -74,7 +74,9 @@ bool Game::processCommands(const std::string& in) {
         return false;
     if (args[0] == "exit")
         return true;
-    if (args[0] == "artinfo") {
+    if (args[0] == "help") {
+        printHelp();
+    } else if (args[0] == "artinfo") {
         printInfo();
     } else if (args[0] == "shothist") {
         printShotHist();
@@ -88,6 +90,8 @@ bool Game::processCommands(const std::string& in) {
         Point shot = art.shoot(std::stod(args[1]));
         std::cout << "Shot landed @ " << shot << std::endl;
         recordHits(shot);
+    } else if (args[0] == "aim") {
+        std::cout << "Shot aimed @ " << art.shoot(std::stod(args[1])) << std::endl;
     }
     return false;
 }
@@ -101,6 +105,19 @@ void Game::startGame() {
         in = getInput();
         done = processCommands(in);
     }
+}
+
+// Prints all of the command options
+void Game::printHelp() const {
+    std::cout << "artinfo - print artillery information\n"
+    << "shothist - print shot history list\n"
+    << "targets - print target list\n"
+    << "rotate [deg] - rotate artillery by degrees\n"
+    << "elevate [deg] - elevate firing angle by degrees\n"
+    << "shoot [vel] - shoot with given velocity (m/s)\n"
+    << "aim [vel] - predict shot with given velocity (m/s)\n"
+    << "help - show this help screen\n"
+    << "exit - exit the game\n";
 }
 
 // Prints all information regarding the artillery

@@ -111,6 +111,9 @@ public:
     // Starts the main game loop
     void startGame();
 
+    // Prints all of the command options
+    void printHelp() const;
+
     // Prints all information regarding the artillery
     void printInfo() const;
 
