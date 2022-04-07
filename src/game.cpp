@@ -1,6 +1,7 @@
 #include <cmath>
 
 #include <iostream>
+#include <random>
 #include <vector>
 
 #include "cli.h"
@@ -53,6 +54,21 @@ Point Artillery::shoot(double shotVelocity) {
     return Point(x, y);
 }
 
+// Generates and places a given number of targets randomly on the map
+void Game::genTargets(int targetAmt, int from, int to) {
+    // This generator initialization was shamelessly stolen from StackOverflow
+    std::random_device rand_dev; // generates a seed
+    std::mt19937 generator(rand_dev()); // initialise the random num generator
+    std::uniform_int_distribution<int> distr(from, to); // generates uniform nums
+
+    for (int i = 0; i < targetAmt; ++i) {
+        int x = distr(generator);
+        int y = distr(generator);
+        gameMap.addTarget(Target(Point(x, y), 1, 100, 10));
+    }
+}
+
+
 /* Checks if any targets are hit. If hit, points are added and health is subtracted
  * All shots, whether hit or not, are added to shot history.*/
 void Game::recordHits(const Point& shot) {
@@ -100,6 +116,7 @@ bool Game::processCommands(const std::string& in) {
 void Game::startGame() {
     std::string in;
     bool done = false;
+    genTargets(10, -50000, 50000);
     printInfo();
     while(!done) {
         in = getInput();

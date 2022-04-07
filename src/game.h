@@ -96,6 +96,9 @@ private:
     World gameMap;
     Artillery art;
 
+    // Generates and places targets randomly on the map
+    void genTargets(int targetAmt, int from, int to);
+
     /* Checks if any targets are hit. If hit, points are added and health is subtracted
     * All shots, whether hit or not, are added to shot history.*/
     void recordHits(const Point& shot);
