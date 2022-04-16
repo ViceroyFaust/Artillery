@@ -5,12 +5,11 @@
 #include "gameObjs.h"
 
 // A standard coordinate point
-class Point {
-public:
+struct Point {
     double x;
     double y;
-    Point(double x, double y) : x(x), y(y) {};
 
+    Point(double x, double y) : x(x), y(y) {};
     friend std::ostream& operator<<(std::ostream& os, const Point& p) {
         os << "(" << p.x << ", " << p.y << ")";
         return os;
