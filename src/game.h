@@ -62,11 +62,6 @@ private:
     double m_maxRotSpeed;
     double m_maxElevSpeed;
 
-    /* Calculates the distance of a shot based on the assumption that the shot is fired
-    * and landed on the same elevation. Velocity is provided for the user, while the
-    * the direction and firing angle is taken from the artillery's state */
-    double calcLevelDistance(double shotVelocity);
-
 public:
     /* = Constructor for every member variable =
     * DegHeading - compass heading; DegElevation firing angle; maxRotSpeed & maxElevSpeed - deg/s */

@@ -23,15 +23,6 @@ unsigned int TargetManager::findID(idVal id) {
                  [](const Target& t) {return t.getId == id;}, targets.end()));
 }
 
-/* Calculates the distance of a shot based on the assumption that the shot is fired
- * and landed on the same elevation. Velocity is provided for the user, while the
- * the direction and firing angle is taken from the artillery's state */
-double Artillery::calcLevelDistance(double shotVelocity) {
-    double radElev = deg2Rad(m_degElevation);
-    // 2 * vnet^2 * sin(theta) * cos(theta) / g
-    return std::abs(2 * (shotVelocity*shotVelocity) * std::sin(radElev) * std::cos(radElev) / 9.81);
-}
-
 /* = Constructor for every member variable =
  * DegHeading - compass heading; DegElevation firing angle; maxRotSpeed & maxElevSpeed - deg/s */
 Artillery::Artillery(double degHeading, double degElevation, double maxRotSpeed, double maxElevSpeed)
@@ -52,7 +43,7 @@ void Artillery::changeElevBy(double degrees) {
 
 // Calculates the landing point of the shot and returns the coordinates
 Point Artillery::shoot(double shotVelocity) {
-    double distance = calcLevelDistance(shotVelocity);
+    double distance = lvlProjectileDispl(shotVelocity, m_degElevation);
     // Convert the bearing to trig degrees for math to be right
     // Further, convert degrees to radians as that's what cmath uses
     double radHead = deg2Rad(bear2deg(m_degBearing));
