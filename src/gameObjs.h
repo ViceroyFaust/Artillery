@@ -16,9 +16,9 @@ struct Point {
     }
 };
 
+using idVal = unsigned int;
 // A target to be shot by the player.
 class Target {
-    using idVal = unsigned int;
 private:
     Point m_pos;
     double m_radius;
@@ -43,6 +43,8 @@ public:
     int getHP() const { return m_hp; }
 
     int getPoints() const { return m_points; }
+
+    idVal getID() const { return m_id; }
 };
 
 #endif // GAMEOBJS_H_INCLUDED
