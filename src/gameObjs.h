@@ -44,7 +44,7 @@ public:
 
     int getPoints() const { return m_points; }
 
-    idVal getID() const { return m_id; }
+    idVal getId() const { return m_id; }
 };
 
 #endif // GAMEOBJS_H_INCLUDED

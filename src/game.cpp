@@ -18,9 +18,9 @@ idVal TargetManager::genTargetId() {
 }
 
 // removes target based on id
-unsigned int TargetManager::findID(idVal id) {
+void TargetManager::removeTargetId(idVal id) {
     targets.erase(std::remove_if(targets.begin(), targets.end(),
-                 [](const Target& t) {return t.getId == id;}, targets.end()));
+                 [id](const Target& t) {return t.getId() == id;}), targets.end());
 }
 
 /* = Constructor for every member variable =
@@ -62,7 +62,7 @@ void Game::genTargets(int targetAmt, int from, int to) {
     for (int i = 0; i < targetAmt; ++i) {
         int x = distr(generator);
         int y = distr(generator);
-        gameMap.addTarget(Target(Point(x, y), 1, 100, 10));
+        tm.addTarget(Point(x, y), 1, 100, 10);
     }
 }
 
@@ -70,15 +70,16 @@ void Game::genTargets(int targetAmt, int from, int to) {
 /* Checks if any targets are hit. If hit, points are added and health is subtracted
  * All shots, whether hit or not, are added to shot history.*/
 void Game::recordHits(const Point& shot) {
-    unsigned int size = gameMap.getTargetAmt();
+    unsigned int size = tm.getTargetAmt();
     for (unsigned int i = 0u; i < size; ++i) {
-        Target t = gameMap.getTarget(i);
-        if (t.getHP() > 0 && t.doesThisHitMe(shot)) {
+        Target t = tm.getTarget(i);
+        // TODO: Make a class responsible for hit detection
+        if (t.getHP() > 0 /*&& t.doesThisHitMe(shot)*/) {
             points += t.getPoints();
             t.changeHP(-100);
         }
     }
-    gameMap.recordShot(shot);
+    sm.recordShot(shot);
 }
 
 // Processes the commands entered in the terminal. Returns true to exit.
@@ -173,16 +174,16 @@ void Game::printElevSpeed() const {
 // Prints shot history as a list
 void Game::printShotHist() const {
     std::cout << "Shot History:\n";
-    for (size_t i = 0; i < gameMap.getShotsAmt(); ++i) {
-        std::cout << gameMap.getShot(i) << std::endl;
+    for (size_t i = 0; i < sm.getShotsAmt(); ++i) {
+        std::cout << sm.getShot(i) << std::endl;
     }
 }
 
 // Prints game targets as a list along with their status
 void Game::printTargets() const {
     std::cout << "Targets:\n";
-    for (size_t i = 0; i < gameMap.getTargetAmt(); ++i) {
-        Target targ = gameMap.getTarget(i);
+    for (size_t i = 0; i < tm.getTargetAmt(); ++i) {
+        Target targ = tm.getTarget(i);
         std::cout << targ.getPos();
         if (targ.getHP() > 0)
             std::cout << " " << targ.getHP() << " HP\n";

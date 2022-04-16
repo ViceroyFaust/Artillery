@@ -24,6 +24,6 @@ double deg2Rad(double deg);
 double calcDist(double x1, double y1, double x2, double y2);
 
 // Returns the displacement of a projectile that lands on the same height as from where it was shot
-double lvlProjectileDispl(double shotVelocity);
+double lvlProjectileDispl(double shotVelocity, double angle);
 
 #endif // MATHS_H_INCLUDED

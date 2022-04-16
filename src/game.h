@@ -99,7 +99,8 @@ public:
 class Game {
 private:
     int points;
-    World gameMap;
+    TargetManager tm;
+    ShotManager sm;
     Artillery art;
 
     // Generates and places targets randomly on the map
@@ -114,7 +115,7 @@ private:
 
 public:
     Game(double maxRotSpeed, double maxElevSpeed)
-        : points(0), gameMap(), art(maxRotSpeed, maxElevSpeed) {};
+        : points(0), tm(), sm(), art(maxRotSpeed, maxElevSpeed) {};
     Game() : Game(20, 10) {};
 
     // Starts the main game loop
