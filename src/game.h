@@ -4,35 +4,15 @@
 #include <vector>
 #include "gameObjs.h"
 
-class World {
+class ShotManager {
 private:
     std::vector<Point> shots;
-    std::vector<Target> targets;
-
-    // Generate a unique ID for every target as needed via static u_int
-    unsigned int genTargetID();
 
 public:
-    World() : shots(), targets() {};
+    ShotManager() : shots() {};
 
     void recordShot(const Point& c) {
         shots.push_back(c);
-    }
-
-    void addTarget(const Target& toAdd) {
-        targets.push_back(toAdd);
-    }
-
-    void removeTarget(unsigned int index) {
-        targets.erase(targets.begin() + index);
-    }
-
-    unsigned int getTargetAmt() const {
-        return targets.size();
-    }
-
-    Target getTarget(unsigned int index) const {
-        return targets[index];
     }
 
     unsigned int getShotsAmt() const {
@@ -42,6 +22,37 @@ public:
     Point getShot(unsigned int index) const {
         return shots[index];
     }
+};
+
+class TargetManager {
+private:
+    std::vector<Target> targets;
+
+    // Generate a unique ID for every target as needed via static u_int
+    idVal genTargetId();
+public:
+    TargetManager() : targets() {};
+
+    void addTarget(const Point& pos, double rad, int hp, int pts) {
+        targets.push_back(Target(pos, rad, hp, pts, genTargetId()));
+    }
+
+    // remove target based on index.
+    void removeTarget(unsigned int index) {
+        targets.erase(targets.begin() + index);
+    }
+
+    // remove target based on Id
+    void removeTargetId (idVal id);
+
+    unsigned int getTargetAmt() const {
+        return targets.size();
+    }
+
+    Target getTarget(unsigned int index) const {
+        return targets[index];
+    }
+
 };
 
 class Artillery {

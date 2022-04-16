@@ -1,5 +1,6 @@
 #include <cmath>
 
+#include <algorithm>
 #include <iostream>
 #include <random>
 #include <vector>
@@ -11,9 +12,15 @@
 #include "owlFuncs.h"
 
 // Generate a unique ID for every target as needed via static u_int
-unsigned int World::genTargetID() {
-    static unsigned int s_id{0};
+idVal TargetManager::genTargetId() {
+    static idVal s_id{0};
     return s_id++;
+}
+
+// removes target based on id
+unsigned int TargetManager::findID(idVal id) {
+    targets.erase(std::remove_if(targets.begin(), targets.end(),
+                 [](const Target& t) {return t.getId == id;}, targets.end()));
 }
 
 /* Calculates the distance of a shot based on the assumption that the shot is fired
