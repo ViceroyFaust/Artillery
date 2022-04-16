@@ -18,18 +18,17 @@ struct Point {
 
 // A target to be shot by the player.
 class Target {
+    using idVal = unsigned int;
 private:
     Point m_pos;
     double m_radius;
     int m_hp;
     int m_points;
+    idVal m_id;
 
 public:
     // Constructs a target with a coordinate pos, hit radius, hitpoints, and points
-    Target(Point pos, double radius, int hp, int points);
-
-    // returns true if shot distance <= radius length of target
-    bool doesThisHitMe(const Point& shot);
+    Target(Point pos, double radius, int hp, int points, idVal id);
 
     // Increments x and y based on input
     void changePos(double x, double y);
