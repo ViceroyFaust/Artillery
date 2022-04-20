@@ -79,7 +79,6 @@ void Game::recordHits(const Point& shot) {
             t.changeHP(-100);
         }
     }
-    sm.recordShot(shot);
 }
 
 // Processes the commands entered in the terminal. Returns true to exit.
@@ -93,8 +92,6 @@ bool Game::processCommands(const std::string& in) {
         printHelp();
     } else if (args[0] == "artinfo") {
         printInfo();
-    } else if (args[0] == "shothist") {
-        printShotHist();
     } else if (args[0] == "targets") {
         printTargets();
     } else if (args[0] == "rotate") {
@@ -126,7 +123,6 @@ void Game::startGame() {
 // Prints all of the command options
 void Game::printHelp() const {
     std::cout << "artinfo - print artillery information\n"
-    << "shothist - print shot history list\n"
     << "targets - print target list\n"
     << "rotate [deg] - rotate artillery by degrees\n"
     << "elevate [deg] - elevate firing angle by degrees\n"
@@ -169,14 +165,6 @@ void Game::printRotSpeed() const {
 // Prints the elevation speed of the cannon in deg/s
 void Game::printElevSpeed() const {
     std::cout << "Elevation speed: " << art.getElevSpeed() << "°/second\n";
-}
-
-// Prints shot history as a list
-void Game::printShotHist() const {
-    std::cout << "Shot History:\n";
-    for (size_t i = 0; i < sm.getShotsAmt(); ++i) {
-        std::cout << sm.getShot(i) << std::endl;
-    }
 }
 
 // Prints game targets as a list along with their status

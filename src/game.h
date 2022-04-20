@@ -4,26 +4,6 @@
 #include <vector>
 #include "gameObjs.h"
 
-class ShotManager {
-private:
-    std::vector<Point> shots;
-
-public:
-    ShotManager() : shots() {};
-
-    void recordShot(const Point& c) {
-        shots.push_back(c);
-    }
-
-    unsigned int getShotsAmt() const {
-        return shots.size();
-    }
-
-    Point getShot(unsigned int index) const {
-        return shots[index];
-    }
-};
-
 class TargetManager {
 private:
     std::vector<Target> targets;
@@ -100,7 +80,6 @@ class Game {
 private:
     int points;
     TargetManager tm;
-    ShotManager sm;
     Artillery art;
 
     // Generates and places targets randomly on the map
@@ -115,7 +94,7 @@ private:
 
 public:
     Game(double maxRotSpeed, double maxElevSpeed)
-        : points(0), tm(), sm(), art(maxRotSpeed, maxElevSpeed) {};
+        : points(0), tm(), art(maxRotSpeed, maxElevSpeed) {};
     Game() : Game(20, 10) {};
 
     // Starts the main game loop
@@ -141,9 +120,6 @@ public:
 
     // Prints the elevation speed of the cannon in deg/s
     void printElevSpeed() const;
-
-    // Prints shot history as a list
-    void printShotHist() const;
 
     // Prints game targets as a list along with their status
     void printTargets() const;
