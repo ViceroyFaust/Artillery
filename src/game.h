@@ -4,37 +4,6 @@
 #include <vector>
 #include "gameObjs.h"
 
-class TargetManager {
-private:
-    std::vector<Target> targets;
-
-    // Generate a unique ID for every target as needed via static u_int
-    idVal genTargetId();
-public:
-    TargetManager() : targets() {};
-
-    void addTarget(const Point& pos, double rad, int hp, int pts) {
-        targets.push_back(Target(pos, rad, hp, pts, genTargetId()));
-    }
-
-    // remove target based on index.
-    void removeTarget(unsigned int index) {
-        targets.erase(targets.begin() + index);
-    }
-
-    // remove target based on Id
-    void removeTargetId (idVal id);
-
-    unsigned int getTargetAmt() const {
-        return targets.size();
-    }
-
-    Target getTarget(unsigned int index) const {
-        return targets[index];
-    }
-
-};
-
 class Artillery {
 private:
     double m_degBearing;
@@ -79,11 +48,17 @@ public:
 class Game {
 private:
     int points;
-    TargetManager tm;
+    std::vector<Target> targets;
     Artillery art;
+
+    // Generate a unique ID for every target as needed via static u_int
+    idVal genTargetId();
 
     // Generates and places targets randomly on the map
     void genTargets(int targetAmt, int from, int to);
+
+    // Checks whether a shot has hit an existing target within its hit radius
+    bool isTargetHit(const Point& shot, const Target& targ);
 
     /* Checks if any targets are hit. If hit, points are added and health is subtracted
     * All shots, whether hit or not, are added to shot history.*/
@@ -94,7 +69,7 @@ private:
 
 public:
     Game(double maxRotSpeed, double maxElevSpeed)
-        : points(0), tm(), art(maxRotSpeed, maxElevSpeed) {};
+        : points(0), targets(), art(maxRotSpeed, maxElevSpeed) {};
     Game() : Game(20, 10) {};
 
     // Starts the main game loop
